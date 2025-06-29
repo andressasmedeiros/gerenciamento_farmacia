@@ -47,6 +47,12 @@ class UserService {
         });
     }
 
+    getUserById(id) {
+        return axios.get(`${HOST}${ENDPOINT}/${id}`, {
+            headers: this.getAuthHeaders()
+        });
+    }
+
 
 }
 

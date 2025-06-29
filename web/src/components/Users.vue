@@ -17,11 +17,17 @@
           </Column>
           <Column field="profile" header="Perfil" />
           <Column header="Ação">
-            <template #body>
-              <Button label="Editar" icon="pi pi-pencil" class="p-button-sm" @click="visible = true" />
+            <template #body="slotProps">
+              <Button label="Editar" icon="pi pi-pencil" class="p-button-sm" @click="() => prepareEditUser(slotProps.data.id)" />
             </template>
           </Column>
         </DataTable>
+
+
+        <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '50rem' }">
+          <UserForm :showDocument="false" :showEmail="false" :showProfile="false" :isCreating="false" :userId="userIdBeingEdited" :showPassword="false" />
+        </Dialog>
+
       </div>
     </Template>
   </div>
@@ -34,16 +40,22 @@ import UserService from "../services/UserService";
 import { onMounted, ref } from "vue";
 import ErrorUtils from "@/utils/ErrorUtils";
 import { useRouter } from "vue-router";
+import UserForm from './UserForm.vue';
 
 const users = ref([]);
 const router = useRouter();
 const visible = ref(false);
+const userIdBeingEdited = ref(null);
 
 const updateStatus = (user) => {
   UserService.updateUserStatus(user.id, user.status)
     .catch(error => ErrorUtils.handleError(error, router));
 };
 
+const prepareEditUser = (userId) => {
+  visible.value = true;
+  userIdBeingEdited.value = userId;
+};
 
 onMounted(() => {
   UserService.getUsers()

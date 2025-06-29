@@ -12,7 +12,6 @@ import Movements from './components/Movements.vue';
 import ProductsReceived from './components/ProductsReceived.vue';
 import Movement from './components/Movement.vue';
 import User from './components/User.vue';
-import { Dialog } from 'primevue/dialog';
 
 import PrimeVue from 'primevue/config';
 import Toast from 'primevue/toast';
@@ -37,7 +36,8 @@ import {
   Textarea,
   FileUpload,
   InputNumber,
-  Fieldset
+  Fieldset,
+  Dialog
 } from 'primevue';
 
 import 'primeflex/primeflex.css';

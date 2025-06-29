@@ -44,29 +44,6 @@ class LoginService {
         }
     }
 
-    /*getProfile() {
-        const token = localStorage.getItem('token');
-        if (!token || token.split('.').length !== 3) {
-            return null;
-        }
-
-        try {
-            const [, payloadBase64] = token.split('.');
-            const payloadJson = atob(payloadBase64);
-            const payload = JSON.parse(payloadJson);
-            return {
-                userId: payload.userId,
-                profile: payload.profile,
-                roles: payload.roles
-            };
-        } catch (error) {
-            console.error('Erro ao decodificar o token:', error);
-            return null;
-        }
-    }*/
-
-
-
     tokenExists() {
         const token = localStorage.getItem("token");
         return !!token;

@@ -17,8 +17,7 @@ class UserController {
   create = async (req: Request, res: Response) => {
     try {
       const {
-        name, profile, email, password, document, street, number,
-        neighborhood, city, state, complement, zip_code, avatar
+        name, profile, email, password, document, address, avatar
       } = req.body;
 
       const erros = [];
@@ -69,7 +68,15 @@ class UserController {
 
       if (profile === Profile.DRIVER) {
         const driver = this.driversRepository.create({
-          document, street, number, neighborhood, city, state, complement, zip_code, user
+          document,
+          street: address?.street,
+          number: address?.number,
+          neighborhood: address?.neighborhood,
+          city: address?.city,
+          state: address?.state,
+          complement: address?.complement,
+          zip_code: address?.zip_code,
+          user
         });
         await this.driversRepository.save(driver);
         const role = await this.roleRepository.findOne({ where: { description: "DRIVER" } });
@@ -78,6 +85,15 @@ class UserController {
           await this.userRepository.save(user);
         }
       } else if (profile === Profile.BRANCH) {
+        const {
+          street,
+          number,
+          neighborhood,
+          city,
+          state,
+          complement,
+          zip_code
+        } = address || {};
         const fullAddress = `${street}, ${number}, ${neighborhood}, ${city}, ${state}, ${zip_code}`;
         const coords = await getCoordinatesFromAddress(fullAddress);
         const branch = this.branchesRepository.create({
@@ -153,30 +169,62 @@ class UserController {
 
       if (!user) {
         res.status(204).json({});
-        return;
+        return
       }
 
-      let fullAddress = null;
+      let address: {
+        street: string | null;
+        number: string | null;
+        neighborhood: string | null;
+        city: string | null;
+        state: string | null;
+        complement: string | undefined;
+        zip_code: string | null;
+      } = {
+        street: null,
+        number: null,
+        neighborhood: null,
+        city: null,
+        state: null,
+        complement: undefined,
+        zip_code: null,
+      };
 
       if (user.drivers && user.drivers.length > 0) {
-        const d = user.drivers[0];
-        fullAddress =
-          `${d.street}, ${d.number} - ${d.neighborhood}, ${d.city} - ${d.state}, CEP: ${d.zip_code}` +
-          (d.complement ? `, ${d.complement}` : "");
+        const driver = user.drivers[0];
+        address = {
+          street: driver.street,
+          number: driver.number,
+          neighborhood: driver.neighborhood,
+          city: driver.city,
+          state: driver.state,
+          complement: driver.complement,
+          zip_code: driver.zip_code,
+        };
       } else if (user.branches) {
-        const b = user.branches;
-        fullAddress =
-          `${b.street}, ${b.number} - ${b.neighborhood}, ${b.city} - ${b.state}, CEP: ${b.zip_code}` +
-          (b.complement ? `, ${b.complement}` : "");
+        const branch = user.branches;
+        address = {
+          street: branch.street,
+          number: branch.number,
+          neighborhood: branch.neighborhood,
+          city: branch.city,
+          state: branch.state,
+          complement: branch.complement,
+          zip_code: branch.zip_code,
+        };
       }
 
       res.status(200).json({
         id: user.id,
         name: user.name,
+        email: user.email,
+        password: user.passwordHash,
+        created_at: user.createdAt,
+        updated_at: user.updatedAt,
         status: user.status,
-        full_address: fullAddress,
         profile: user.profile,
-        avatar: user.avatar ? user.avatar.toString('base64') : null
+        avatar: user.avatar ? user.avatar.toString('base64') : null,
+        address,
       });
     } catch (error) {
       console.error("Erro ao buscar usuário:", error);
