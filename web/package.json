@@ -1,0 +1,23 @@
+{
+  "name": "gerenciamento-farmacia-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@primeuix/themes": "^1.0.0",
+    "axios": "^1.8.2",
+    "core-js": "^3.8.3",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.3.1",
+    "vue": "^3.2.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0"
+  }
+}
