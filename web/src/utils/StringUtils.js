@@ -81,6 +81,18 @@ class StringUtils {
     static isValidCep(cep) {
         return /^\d{5}-\d{3}$/.test(cep);
     }
+
+    static formatDateTime(date) {
+        if (!date) {
+            return '';
+        }
+        let d = typeof date === 'string' ? new Date(date) : date;
+
+        const formatNumber = (num) => String(num).padStart(2, '0');
+
+        return `${formatNumber(d.getDate())}/${formatNumber(d.getMonth() + 1)}/${d.getFullYear()} ` +
+            `${formatNumber(d.getHours())}:${formatNumber(d.getMinutes())}:${formatNumber(d.getSeconds())}`;
+    }
 }
 
 export default StringUtils;

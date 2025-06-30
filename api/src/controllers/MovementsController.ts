@@ -45,6 +45,11 @@ class MovementsController {
                 return;
             }
 
+            if (product.avatar && typeof product.avatar === 'string') {
+                const base64Data = (product.avatar as string).replace(/^data:image\/\w+;base64,/, '');
+                product.avatar = Buffer.from(base64Data, 'base64');
+            }
+
             product.amount -= quantity;
             await productRepository.save(product);
 
@@ -291,16 +296,22 @@ class MovementsController {
         }
 
         const productRepository = AppDataSource.getRepository(Products);
-        const product = await productRepository.findOne({ where: { id: movement.product.id } });
+        const product = await productRepository.findOne({ where: { id: movement.product.id }, order: { createdAt: "DESC" } });
         if (!product) {
             res.status(400).json({ message: "Produto não encontrado." });
             return;
         }
+
+        if (product.avatar && typeof product.avatar === 'string') {
+            const base64Data = (product.avatar as string).replace(/^data:image\/\w+;base64,/, '');
+            product.avatar = Buffer.from(base64Data, 'base64');
+        }
+
         const newProduct = productRepository.create({
             name: product.name,
             amount: movement.quantity,
             description: product.description,
-            url_cover: product.url_cover,
+            avatar: product.avatar,
             branch: movement.destinationBranches
         });
         await productRepository.save(newProduct);

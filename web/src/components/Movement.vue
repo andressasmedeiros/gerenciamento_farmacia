@@ -4,7 +4,7 @@
             <div class="w-12 flex justify-content-center">
                 <form @submit.prevent="onFormSubmit" class="w-6 flex-column gap-3 flex">
                     <div class="w-12">
-                        <Select :options="branches" optionLabel="name" optionValue="id"
+                        <Select :options="branches" optionLabel="userName" optionValue="id"
                             v-model="movement.destinationBranchId" placeholder="Filial Destino" class="w-12" />
                     </div>
                     <div class="w-12">
@@ -124,7 +124,7 @@ const groupProducts = (productsList) => {
                 name: product.name,
                 amount: product.amount,
                 description: product.description,
-                url_cover: product.url_cover
+                avatar: product.avatar
             };
         } else {
             grouped[product.name].amount += product.amount;

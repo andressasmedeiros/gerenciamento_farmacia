@@ -25,8 +25,15 @@ class UserService {
     }
 
     updateUser(id, data) {
+        console.log('Enviando dados para atualizar o usuário:', data);
         return axios.put(`${HOST}${ENDPOINT}/${id}`, data, {
             headers: this.getAuthHeaders()
+        }).then(response => {
+            console.log('Resposta do backend:', response);
+            return response;
+        }).catch(error => {
+            console.error('Erro ao atualizar usuário:', error);
+            throw error; // Lance novamente o erro para ser tratado no frontend
         });
     }
 

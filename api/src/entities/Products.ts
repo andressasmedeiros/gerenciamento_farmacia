@@ -16,8 +16,8 @@ export class Products {
     @Column({ type: "varchar", length: 200 })
     description: string;
 
-    @Column({ type: "varchar", length: 200 })
-    url_cover: string;
+    @Column({ type: "bytea", nullable: true })
+    avatar: Buffer | null;
 
     @ManyToOne(() => Branches, (branches) => branches.products, { onDelete: "CASCADE" })
     @JoinColumn({ name: "branches_id" })

@@ -25,7 +25,7 @@
 
 
         <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '50rem' }">
-          <UserForm :showDocument="false" :showEmail="false" :showProfile="false" :isCreating="false" :userId="userIdBeingEdited" :showPassword="false" />
+          <UserForm :showDocument="false" :showEmail="false" :showProfile="false" :isCreating="false" :userId="userIdBeingEdited" :showPassword="false" @userUpdated="loadUsers" />
         </Dialog>
 
       </div>
@@ -57,10 +57,14 @@ const prepareEditUser = (userId) => {
   userIdBeingEdited.value = userId;
 };
 
-onMounted(() => {
+const loadUsers = () => {
   UserService.getUsers()
     .then(response => users.value = response.data)
     .catch(error => ErrorUtils.handleError(error, router));
+};
+
+onMounted(() => {
+  loadUsers();
 });
 
 </script>

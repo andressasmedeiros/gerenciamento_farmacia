@@ -34,7 +34,7 @@
                     <div class="p-4">
                         <h3>Histórico</h3>
                         <p>Motorista: {{ slotProps.data.driver?.user.name || 'Nenhum' }}</p>
-                        <p>Status: {{ slotProps.data.status }}</p>
+                        <p>Status: {{ formatStatus(slotProps.data.status) }}</p>
                     </div>
                 </template>
             </DataTable>
@@ -54,6 +54,16 @@ const router = useRouter();
 const movements = ref([]);
 const branches = ref([]);
 const expandedRows = ref([]);
+
+const formatStatus = (status) => {
+    const statusMap = {
+        PENDING: 'Aguardando Coleta',
+        IN_PROGRESS: 'Em trânsito',
+        DELIVERED: 'Coleta Concluída',
+    };
+    return statusMap[status] || status;
+};
+
 
 const carregarMovimentos = () => {
     MovementService.getMovements()

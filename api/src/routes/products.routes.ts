@@ -2,8 +2,10 @@ import { Router } from "express";
 import authenticate from "../middlewares/authenticate";
 import { Permissions } from "../entities/Permission";
 import ProductsController from "../controllers/ProductsController";
+import multer from "multer";
 
 const productsRouter = Router();
+const upload = multer();
 
 const productsController = new ProductsController();
 /**
@@ -68,7 +70,7 @@ const productsController = new ProductsController();
  *       500:
  *         description: Erro interno do servidor
  */
-productsRouter.post("/", authenticate([Permissions.PERMISSAO_FILIAL]), productsController.create)
+productsRouter.post("/", authenticate([Permissions.CRIAR_PRODUTO]), productsController.create)
 
 /**
  * @swagger
@@ -97,8 +99,8 @@ productsRouter.post("/", authenticate([Permissions.PERMISSAO_FILIAL]), productsC
  *                     type: integer
  *                   description:
  *                     type: string
- *                   url_cover:
- *                     type: string
+ *                   avatar:
+ *                     type: bytea
  *                   branch:
  *                     type: object
  *                     properties:
@@ -110,5 +112,63 @@ productsRouter.post("/", authenticate([Permissions.PERMISSAO_FILIAL]), productsC
  *         description: Erro interno do servidor
  */
 productsRouter.get("/", authenticate([Permissions.PERMISSAO_FILIAL]), productsController.getAll)
+
+/**
+ * @swagger
+ * /products/{id}/avatar:
+ *   put:
+ *     summary: Atualiza o avatar de um produto
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do produto a ser atualizado
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - avatar
+ *             properties:
+ *               avatar:
+ *                 type: string
+ *                 format: byte
+ *                 example: "data:image/jpeg;base64,...base64string..."
+ *     responses:
+ *       200:
+ *         description: Avatar do produto atualizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *                 amount:
+ *                   type: integer
+ *                 description:
+ *                   type: string
+ *                 avatar:
+ *                   type: string
+ *                   format: byte
+ *                 branch_id:
+ *                   type: integer
+ *       400:
+ *         description: Erro de requisição inválida
+ *       404:
+ *         description: Produto não encontrado
+ *       500:
+ *         description: Erro interno do servidor
+ */
+productsRouter.put("/:id", authenticate([Permissions.CRIAR_PRODUTO]), upload.single("avatar"), productsController.updateProduct);
 
 export default productsRouter;

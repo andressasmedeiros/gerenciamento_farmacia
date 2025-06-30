@@ -144,6 +144,9 @@ class UserController {
       const users = await this.userRepository.find({
         where: profile ? { profile: profile as Profile } : {},
         select: ["id", "name", "status", "profile", "avatar"],
+        order: {
+          id: "DESC"
+        },
       });
 
       const usersWithBase64 = users.map(user => ({
@@ -239,11 +242,6 @@ class UserController {
         name,
         email,
         password,
-        id,
-        created_at,
-        updated_at,
-        status,
-        profile,
         street,
         number,
         neighborhood,
@@ -251,14 +249,8 @@ class UserController {
         state,
         complement,
         zip_code,
+        avatar
       } = req.body;
-
-      if (id || created_at || updated_at || status || profile) {
-        res.status(401).json({
-          message: "Não é permitido alterar id, created_at, updated_at, status, profile",
-        });
-        return;
-      }
 
       const user = await this.userRepository.findOne({
         where: { id: Number(req.params.id) },
@@ -283,8 +275,9 @@ class UserController {
         user.passwordHash = await bcrypt.hash(password, salt);
       }
 
-      if (req.file && req.file.buffer) {
-        user.avatar = req.file.buffer;
+      if (avatar && typeof avatar === 'string') {
+        const base64Data = avatar.replace(/^data:image\/\w+;base64,/, '');
+        user.avatar = Buffer.from(base64Data, 'base64');
       }
 
       if (user.drivers && user.drivers.length > 0) {

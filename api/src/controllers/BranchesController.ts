@@ -2,29 +2,13 @@ import { AppDataSource } from "../data-source";
 import { Branches } from "../entities/Branches";
 import { Request, Response } from "express";
 import LoginController from "./LoginController";
-import { Movements } from "../entities/Movements";
 
 class BranchesController {
   private branchesRepository = AppDataSource.getRepository(Branches);
   private loginController = new LoginController();
 
   getAll = async (req: Request, res: Response) => {
-    try {
-      const movementRepository = AppDataSource.getRepository(Movements);
-      const movements = await movementRepository.find({
-        relations: [
-          "driver",
-          "product",
-          "product.branch.user",
-          "destinationBranches.user",
-        ],
-      });
-
-      res.status(200).json(movements);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Erro interno no servidor." });
-    }
+    return this.getBranches(req, res, false);
   };
 
   getDestinatioBranches = async (req: Request, res: Response) => {
