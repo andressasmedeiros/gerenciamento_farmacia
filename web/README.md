@@ -1,11 +1,11 @@
-#Gerenciamento Farmácia (Web)
-##Sobre o Projeto
+# Gerenciamento Farmácia (Web)
+## Sobre o Projeto
 Este é o front-end web para o sistema de gerenciamento de farmácias, que permite aos usuários visualizar e controlar produtos, estoque e movimentações entre filiais com interface amigável e responsiva.
 
-##Problema Resolvido
+## Problema Resolvido
 A aplicação web facilita o gerenciamento das operações da farmácia, permitindo que usuários autorizados monitorem estoques, cadastrem produtos e visualizem movimentações de forma intuitiva, garantindo eficiência e segurança no controle.
 
-##Tecnologias Utilizadas
+## Tecnologias Utilizadas
 Frontend: Vue.js
 Estilização: PrimeVue e PrimeFlex
 Comunicação com API Backend: Axios
