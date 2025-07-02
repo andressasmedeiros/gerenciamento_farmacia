@@ -20,7 +20,7 @@ Build e Desenvolvimento: Vite (ou Vue CLI, se usar)
    ```
 2. Instale as dependências:
    ```sh
-   cd backend-farmacia-web
+   cd web
    npm install
    ```
 3. Clone o arquivo .env-example e preencha as variáveis de ambiente
