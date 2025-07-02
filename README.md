@@ -16,14 +16,20 @@ Permite que filiais cadastrem produtos, gerenciem estoques e realizem movimenta�
 
 ## Tecnologias Utilizadas
 Backend: Node.js com Express
+
 Banco de Dados: PostgreSQL com TypeORM
+
 Autenticação: JWT (JSON Web Token)
+
 Hash de Senha: Bcrypt
 
 ## Melhorias Futuras
 Implementar testes automatizados
+
 Criar interface web para gestão (frontend)
+
 Melhorar logs de auditoria e histórico de movimentações
+
 Atualizar produtos automaticamente ao finalizar movimentações
 
 ## Frontend - Web Gerenciamento Farmácia
@@ -35,9 +41,13 @@ Facilita o gerenciamento das operações da farmácia, garantindo eficiência, s
 
 ## Tecnologias Utilizadas
 Frontend: Vue.js
+
 Estilização: PrimeVue e PrimeFlex
+
 Comunicação com API Backend: Axios
+
 Gerenciamento de Estado: Vuex ou Composition API
+
 Build e Desenvolvimento: Vite (ou Vue CLI)
 
 ## Melhorias Futuras
