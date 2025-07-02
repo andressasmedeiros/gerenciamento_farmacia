@@ -19,7 +19,7 @@ O sistema permite que filiais cadastrem produtos, gerenciem seus estoques e real
    ```
 2. Instale as dependências:
    ```sh
-   cd backend-farmacia-api
+   cd api
    npm install
    ```
 3. Clone o arquivo .env-example e preencha as variáveis de ambiente
